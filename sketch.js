@@ -153,36 +153,54 @@ function drawGameOverUI(displayW, displayH) {
   let cardW = 600;
   let cardH = 400;
   
+  // 背景偏暗與科技感：繪製全螢幕深色半透明遮罩
+  push();
+  fill(10, 10, 30, 200); // 深藍黑色
+  noStroke();
+  rect(width / 2, height / 2, width, height);
+  pop();
+
+  // 繪製科技感 HUD 線條
+  drawHUDDecor();
+
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
 
+  // 中央玻璃擬態卡片
+  push();
+  fill(255, 255, 255, 20); // 極低透明度白色
+  stroke(0, 242, 255, 150); // 霓虹青邊框
+  strokeWeight(2);
+  drawingContext.shadowBlur = 30;
+  drawingContext.shadowColor = 'rgba(0, 242, 255, 0.5)';
+  rect(width / 2, height / 2, cardW, cardH, 30);
+  pop();
+
   // 標題
-  fill('#ff4d6d');
-  textSize(48);
+  fill(255);
+  textSize(56);
   textStyle(BOLD);
-  drawingContext.shadowBlur = 10;
-  drawingContext.shadowColor = 'white';
-  text(playerScore >= 3 ? "🏆 你贏了！" : "🤖 AI 獲勝！", width / 2, height / 2 - 130);
+  drawingContext.shadowBlur = 20;
+  drawingContext.shadowColor = '#00f2ff';
+  text("再玩一局？", width / 2, height / 2 - 110);
   
-  textSize(32);
-  fill('#ff758c');
-  text("再玩一局？", width / 2, height / 2 - 80);
+  // 戰績統計 (勝、敗、平)
+  textSize(28);
+  fill(200, 230, 255);
+  noStroke();
+  drawingContext.shadowBlur = 0;
+  text(`${playerScore} 勝  |  ${aiScore} 敗  |  ${drawCount} 平`, width / 2, height / 2 - 30);
 
-  // 戰績統計
-  textSize(24);
-  fill('#757bc8');
-  text(`${playerScore} 勝、${aiScore} 敗、${drawCount} 平`, width / 2, height / 2 - 30);
-
-  // 左側按鈕：結束 (紅色發光)
-  drawVRButton(width / 2 - 140, height / 2 + 80, 220, 80, "🏠 結束", '#ff4d6d', true);
+  // 左側按鈕：結束 (紅色發光) 附房子 icon
+  drawVRButton(width / 2 - 150, height / 2 + 100, 240, 90, "🏠 結束", '#ff4d6d', true);
   
-  // 右側按鈕：繼續 (白色帶綠光)
-  drawVRButton(width / 2 + 140, height / 2 + 80, 220, 80, "🎮 繼續", '#ffffff', false, '#00ff88');
+  // 右側按鈕：繼續 (白色帶綠光) 附遊戲手把 icon
+  drawVRButton(width / 2 + 150, height / 2 + 100, 240, 90, "🎮 繼續", '#ffffff', false, '#00ff88');
 
   // 下方操作提示
-  fill(255, 255, 255, 150);
-  textSize(18);
-  text("右手比 👍 繼續，左手比 👍 結束", width / 2, height / 2 + 170);
+  fill(255, 255, 255, 180);
+  textSize(20);
+  text("右手比 👍 繼續  |  左手比 👍 結束", width / 2, height / 2 + 185);
 }
 
 /**
@@ -262,15 +280,20 @@ function resetGame() {
  * 繪製 HUD 裝飾線條
  */
 function drawHUDDecor() {
-  stroke(0, 242, 255, 100);
-  strokeWeight(1);
+  push();
+  stroke(0, 242, 255, 180);
+  strokeWeight(2);
   noFill();
+  drawingContext.shadowBlur = 15;
+  drawingContext.shadowColor = '#00f2ff';
+  
   // 四角裝飾
-  let offset = 40;
+  let offset = 60;
   line(offset, offset, offset + 100, offset);
   line(offset, offset, offset, offset + 100);
   line(width - offset, height - offset, width - offset - 100, height - offset);
   line(width - offset, height - offset, width - offset, height - offset - 100);
+  pop();
 }
 
 /**
